@@ -2,7 +2,8 @@ class UserProfile(
     var userID: String,
     var LastTweet: Tweet,
     var listOfFollowing: Map[String, String] = Map(),
-    var numOfTweets: Int
+    var numOfTweets: Int,
+    var dbRef: TweetDataBase
     ) {
   
   def getFollowingList() = {
