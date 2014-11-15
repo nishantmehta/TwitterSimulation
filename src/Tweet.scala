@@ -7,7 +7,7 @@ class Tweet(
   var mentions: List[String],
   var tweet: String,
   var tweetID: String,
-  var userID: String,
+  var userID: Int,
   var tweetType: String) {
   
   def printTweet() = {

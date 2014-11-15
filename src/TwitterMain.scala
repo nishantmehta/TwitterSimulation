@@ -13,25 +13,28 @@ import scala.concurrent.Promise
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 
-
 object TwitterMain extends App {
 
   //initiate the database
- 
-  //create actor to handle request from client
+  val config = new TwitterConfig
+  val twitterDB = new TweetDataBase()
+  twitterDB.initializeDB(config)
+  var user: UserProfile = twitterDB.index.getOrElse(20, null)
+  user.print()
   
+  
+  //create actor to handle request from client
+
 }
 
+class ServerEndpoint extends Actor {
 
+  def receive = {
+    case TwitterRequestMessage(msgtype, msgcontent) => {
+      //depending upon the request call a new function
 
- class ServerEndpoint extends Actor {
-   
-	 def receive = {
-	   case TwitterRequestMessage(msgtype, msgcontent) =>{
-		   //depending upon the request call a new function
-	     
-	   }
-	   
-	 }
-	 
+    }
+
   }
+
+}
