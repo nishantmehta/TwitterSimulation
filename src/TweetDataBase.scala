@@ -27,15 +27,12 @@ class TweetDataBase {
       index += (userID -> user)
       fillFollowing(user, config)
     }
-    
     for(userID <- consumers) {
       user = new UserProfile(userID, null, 0)
       index += (userID -> user)
       fillFollowing(user, config)
     }
-    println("size of index is " + index.size)
-    
-    
+    println("DB is initialized with size of " + index.size)
   }
   
   //fills the DB with data for user following

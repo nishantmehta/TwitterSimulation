@@ -1,3 +1,5 @@
+import scala.collection.mutable.ListBuffer
+
 class UserProfile(
     var userID: Int,
     var lastTweet: Tweet,
@@ -11,14 +13,30 @@ class UserProfile(
   
   def getLastTenTweets() = {
     //return a list of tweet to the caller
+	var count = 1
+	var tweet: Tweet = lastTweet
+	var tweets = new ListBuffer[Tweet]
+	while(count <= 10 && count <= numOfTweets){
+	  println("inside me")
+	  tweets += tweet
+	  tweet = tweet.previousTweet
+	  count += 1
+	}
+	tweets.toList
   }
   
   def addTweet(tweet: Tweet) ={
     // code to add tweet to the end of linked list
+    numOfTweets += 1
+    if(lastTweet != null){
+      lastTweet.nextTweet = tweet
+      tweet.previousTweet = lastTweet
+    }
+    lastTweet = tweet
   }
   
   def foundMention(userID: String, tweet: Tweet) {
-    // code to add tweet for the user found in the mention
+    //code to add tweet for the user found in the mention
     //lets do this later
   }
   
