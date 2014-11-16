@@ -1,4 +1,5 @@
 import scala.util.Random.nextInt
+import scala.collection.mutable.ListBuffer
 
 class TweetDataBase {
   /*
@@ -18,7 +19,7 @@ class TweetDataBase {
     
     //make two set of users
     //users with high frequency of tweets
-    var producers: List[Int] = List.range(1, (config.numberOfUsers*.2).toInt)
+    var producers: List[Int] = List.range(0, (config.numberOfUsers*.2).toInt)
     //users with low frequency of tweets
     var consumers: List[Int] = List.range((config.numberOfUsers*.2).toInt, config.numberOfUsers)
     var user: UserProfile = null
@@ -46,15 +47,36 @@ class TweetDataBase {
       }
     }
   }
-  def getLatestTweetFromUser(userID: String) {
+  def getLatestTweetFromUser(userID: Int) {
     //get latest tweets for a particular user
+    var user: UserProfile = index.getOrElse(userID, null)
+    user.getLastTenTweets()
   }
 
-  def addTweet(userID: String, tweet: Tweet) {
-
+  def addTweet(userID: Int, tweet: Tweet) {
+    var user: UserProfile = index.getOrElse(userID, null)
+    user.addTweet(tweet)
   }
 
-  def getLatestTweetFromAllFollowing(userID: String) {
-
+  def getLatestTweetFromAllFollowing(userID: Int): List[Tweet] = {
+    var user: UserProfile = index.getOrElse(userID, null)
+    var listOfFollowing: Map[Int, String] = user.listOfFollowing
+    var result = new ListBuffer[Tweet]
+    var temp: UserProfile = null
+    var flag: Boolean = true
+    for((id, lastTweet) <- listOfFollowing){
+      temp = index.getOrElse(id, null)
+      for(tweet <- temp.getLastTenTweets if flag){
+        if(lastTweet != tweet.tweetID){
+          println("<<")
+          result += tweet
+        } else {
+          flag = false
+        }
+      }
+      user.listOfFollowing += (id -> result.last.tweetID)
+      flag = true
+    }
+    result.toList
   }
 }

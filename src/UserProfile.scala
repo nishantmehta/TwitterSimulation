@@ -8,7 +8,7 @@ class UserProfile(
   var listOfFollowing: Map[Int, String] = Map()
   def getFollowingList() = {
     //returns a list users followed 
-    listOfFollowing.keySet
+    listOfFollowing.keySet.toList
   }
   
   def getLastTenTweets() = {
@@ -17,7 +17,6 @@ class UserProfile(
 	var tweet: Tweet = lastTweet
 	var tweets = new ListBuffer[Tweet]
 	while(count <= 10 && count <= numOfTweets){
-	  println("inside me")
 	  tweets += tweet
 	  tweet = tweet.previousTweet
 	  count += 1
