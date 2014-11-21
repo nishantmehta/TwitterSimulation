@@ -40,7 +40,7 @@ class TweetDataBase {
   //this data is also filled using statistics
   def fillFollowing(user: UserProfile, config: TwitterConfig) {
     for(i <- 1 to config.avgNumOfFollower + 1) {
-      if(i <= config.numOfHFFollowing){
+      if(i < config.numOfHFFollowing + 1){
         user.listOfFollowing += (nextInt( (config.numberOfUsers*.2).toInt) -> "-1")
       } else {
         user.listOfFollowing += (nextInt( (config.numberOfUsers).toInt) -> "-1")

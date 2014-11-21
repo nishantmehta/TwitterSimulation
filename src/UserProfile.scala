@@ -5,7 +5,9 @@ class UserProfile(
     var lastTweet: Tweet,
     var numOfTweets: Int
     ) {
+  
   var listOfFollowing: Map[Int, String] = Map()
+  
   def getFollowingList() = {
     //returns a list users followed 
     listOfFollowing.keySet.toList
@@ -44,5 +46,6 @@ class UserProfile(
     println("last tweet is " + lastTweet)
     println("number of tweets " + numOfTweets)
     println("list of following " + listOfFollowing.mkString(" >> "))
+    println("number of user following " + listOfFollowing.size)
   }
 }
