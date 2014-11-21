@@ -28,11 +28,10 @@ object TwitterMain extends App {
 
   //initiate endpoint
   server ! startServer(twitterDB)
-  
+
   //testing all services
   val test = system.actorOf(Props[TestingClient])
   test ! startTestingClient(server, twitterDB, config)
-
 
 }
 
@@ -56,7 +55,6 @@ class ServerEndpoint extends Actor {
   }
 }
 
-
 class TestingClient() extends Actor {
   def receive = {
     case startTestingClient(server, twitterDB, config) => {
@@ -71,11 +69,10 @@ class TestingClient() extends Actor {
         server ! AddTweet(temp, tweet)
       }
       server ! fetchUpdate(user.userID)
-      
-      
+
       println("checked for the first time >>")
-      for(x <- 1 to 1000000) {
-        
+      for (x <- 1 to 1000000) {
+
       }
       var count = 0
       for (temp <- listOfFollowing if count < 3) {
@@ -94,7 +91,7 @@ class TestingClient() extends Actor {
       println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     }
   }
-  
+
 }
 
 /*

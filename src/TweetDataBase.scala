@@ -1,5 +1,5 @@
-import scala.util.Random.nextInt
 import scala.collection.mutable.ListBuffer
+import scala.util.Random.nextInt
 
 class TweetDataBase {
   /*
@@ -16,34 +16,34 @@ class TweetDataBase {
      * thus first 20% of this range(scaleOfDb) will be seleced 98% of the time to fill the follower list
      * I am referring to this http://www.annouckwelhuis.nl/twitter-and-the-pareto-principle-2/
      */
-    
+
     //make two set of users
     //users with high frequency of tweets
-    var producers: List[Int] = List.range(0, (config.numberOfUsers*.2).toInt)
+    var producers: List[Int] = List.range(0, (config.numberOfUsers * .2).toInt)
     //users with low frequency of tweets
-    var consumers: List[Int] = List.range((config.numberOfUsers*.2).toInt, config.numberOfUsers)
+    var consumers: List[Int] = List.range((config.numberOfUsers * .2).toInt, config.numberOfUsers)
     var user: UserProfile = null
-    for(userID <- producers) {
+    for (userID <- producers) {
       user = new UserProfile(userID, null, 0)
       index += (userID -> user)
       fillFollowing(user, config)
     }
-    for(userID <- consumers) {
+    for (userID <- consumers) {
       user = new UserProfile(userID, null, 0)
       index += (userID -> user)
       fillFollowing(user, config)
     }
     println("DB is initialized with size of " + index.size)
   }
-  
+
   //fills the DB with data for user following
   //this data is also filled using statistics
   def fillFollowing(user: UserProfile, config: TwitterConfig) {
-    for(i <- 1 to config.avgNumOfFollower + 1) {
-      if(i < config.numOfHFFollowing + 1){
-        user.listOfFollowing += (nextInt( (config.numberOfUsers*.2).toInt) -> "-1")
+    for (i <- 1 to config.avgNumOfFollower + 1) {
+      if (i < config.numOfHFFollowing + 1) {
+        user.listOfFollowing += (nextInt((config.numberOfUsers * .2).toInt) -> "-1")
       } else {
-        user.listOfFollowing += (nextInt( (config.numberOfUsers).toInt) -> "-1")
+        user.listOfFollowing += (nextInt((config.numberOfUsers).toInt) -> "-1")
       }
     }
   }
@@ -64,10 +64,10 @@ class TweetDataBase {
     var result = new ListBuffer[Tweet]
     var temp: UserProfile = null
     var flag: Boolean = true
-    for((id, lastTweet) <- listOfFollowing){
+    for ((id, lastTweet) <- listOfFollowing) {
       temp = index.getOrElse(id, null)
-      for(tweet <- temp.getLastTenTweets if flag){
-        if(lastTweet != tweet.tweetID){
+      for (tweet <- temp.getLastTenTweets if flag) {
+        if (lastTweet != tweet.tweetID) {
           println("<<")
           result += tweet
         } else {

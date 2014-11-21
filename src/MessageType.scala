@@ -1,4 +1,4 @@
-import akka.actor._
+import akka.actor.ActorRef
 
 /*
  * All messages for communication to actors
@@ -6,7 +6,8 @@ import akka.actor._
 
 sealed trait TwitterServerMessages
 case class startServer(twitterDB: TweetDataBase) extends TwitterServerMessages
-case class startTestingClient(server:ActorRef, twitterDB: TweetDataBase, congif: TwitterConfig) extends TwitterServerMessages
+case class startTestingClient(server: ActorRef, twitterDB: TweetDataBase, congif: TwitterConfig) extends TwitterServerMessages
+
 //client communications
 case class AddTweet(userId: Int, tweet: Tweet) extends TwitterServerMessages
 case class fetchUpdate(userId: Int) extends TwitterServerMessages
