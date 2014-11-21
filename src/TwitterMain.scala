@@ -1,20 +1,10 @@
 
+import scala.util.Random.nextInt
 import akka.actor.Actor
 import akka.actor.ActorSystem
-import akka.actor.Props
-import scala.util.Random.nextInt
-import scala.util.control.Breaks._
-import java.security.MessageDigest
-import scala.collection.SortedMap
-import akka.actor.actorRef2Scala
-import akka.actor.ActorRef
-import akka.dispatch._
-import scala.concurrent.Future
-import scala.concurrent.Promise
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Await
-import scala.collection.mutable.ListBuffer
 import akka.actor.PoisonPill
+import akka.actor.Props
+import akka.actor.actorRef2Scala
 
 object TwitterMain extends App {
 
@@ -93,20 +83,6 @@ class TestingClient() extends Actor {
   }
 
 }
-
-/*
-  def validateServerFunctions(twitterDB: TweetDataBase, config: TwitterConfig)  {
-    var userID = nextInt(config.numberOfUsers)
-    var user: UserProfile = twitterDB.index(userID)
-    user.print()
-    var tempUser: UserProfile = null
-    var listOfFollowing = user.getFollowingList
-    for(temp <- listOfFollowing) {
-      
-      tempUser = twitterDB.index.getOrElse(temp, null)
-      
-      tempUser.addTweet(new Tweet("abc1234" + tempUser.userID, "this is tweet from user " + tempUser.userID, tempUser.userID, null, null, null, "tweet"))
-    }
     
     var tweets1 :List[Tweet]= twitterDB.getLatestTweetFromAllFollowing(user.userID)
     
