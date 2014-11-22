@@ -83,26 +83,3 @@ class TestingClient() extends Actor {
   }
 
 }
-    
-    var tweets1 :List[Tweet]= twitterDB.getLatestTweetFromAllFollowing(user.userID)
-    
-    for(x <- tweets1) {
-      x.printTweet()
-    }
-    
-    println("checked for the first time >>")
-    var count = 0
-    for(temp <- listOfFollowing if count <3) {
-      tempUser = twitterDB.index(temp)
-      tempUser.addTweet(new Tweet("123abc1234" + tempUser.userID, "this is tweet from user " + tempUser.userID, tempUser.userID, null, null, null, "tweet"))
-      count += 1
-    }
-    tweets1 = twitterDB.getLatestTweetFromAllFollowing(user.userID)
-    
-    for(x <- tweets1) {
-      x.printTweet()
-    }
-    println("checked for the second time >>")
-  }
-
-*/
