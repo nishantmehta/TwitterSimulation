@@ -41,9 +41,9 @@ class TweetDataBase {
   def fillFollowing(user: UserProfile, config: TwitterConfig) {
     for (i <- 1 to config.avgNumOfFollower + 1) {
       if (i < config.numOfHFFollowing + 1) {
-        user.listOfFollowing += (nextInt((config.numberOfUsers * .2).toInt) -> "-1")
+        user.listOfFollowing += (nextInt((config.numberOfUsers * .2).toInt) -> null)
       } else {
-        user.listOfFollowing += (nextInt((config.numberOfUsers).toInt) -> "-1")
+        user.listOfFollowing += (nextInt((config.numberOfUsers).toInt) -> null)
       }
     }
   }
@@ -68,13 +68,13 @@ class TweetDataBase {
       temp = index.getOrElse(id, null)
       for (tweet <- temp.getLastTenTweets if flag) {
         if (lastTweet != tweet.tweetID) {
-          println("<<")
           result += tweet
         } else {
           flag = false
         }
       }
-      user.listOfFollowing += (id -> result.last.tweetID)
+      if(result.size != 0 && result.last != null)
+    	  user.listOfFollowing += (id -> result.last.tweetID)
       flag = true
     }
     result.toList

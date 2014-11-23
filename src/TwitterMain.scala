@@ -14,34 +14,51 @@ object TwitterMain extends App {
   twitterDB.initializeDB(config)
 
   val system = ActorSystem("twitterserver")
-  val server = system.actorOf(Props[ServerEndpoint])
+  val server = system.actorOf(Props[ServerEndpoint], name = "serverendpoint")
 
   //initiate endpoint
   server ! startServer(twitterDB)
 
   //testing all services
   val test = system.actorOf(Props[TestingClient])
-  test ! startTestingClient(server, twitterDB, config)
+  //test ! startTestingClient(server, twitterDB, config)
 
 }
 
 class ServerEndpoint extends Actor {
   var twitterDB: TweetDataBase = null
+  var time = System.currentTimeMillis()
+  var count = 0
   def receive = {
+    case msg: String => {
+      println("got a msg from client")
+    }
     case startServer(twitterDb) => {
       twitterDB = twitterDb
       println("server is running now")
     }
     case AddTweet(userId, tweet) => {
+      //println("got a request")
       val worker = context.actorOf(Props[AddTweetWorker])
       worker ! AddTweetWork(userId, tweet, twitterDB, sender)
       worker ! PoisonPill
+      checkCount()
     }
     case fetchUpdate(userId) => {
       val worker = context.actorOf(Props[FetchFollowingWorker])
       worker ! FetchUpdateWork(userId, twitterDB, sender)
       worker ! PoisonPill
+      checkCount()
     }
+  }
+  
+  def checkCount() = {
+    count += 1
+      //println("got one " + count)
+      if(count % 200 == 0){
+        if(((System.currentTimeMillis() - time)/1000)!=0)
+        println("got 200 " +  " msg/sec " + count/((System.currentTimeMillis() - time)/1000))
+      }
   }
 }
 
@@ -56,7 +73,7 @@ class TestingClient() extends Actor {
       var tweet: Tweet = null
       for (temp <- listOfFollowing) {
         tweet = new Tweet("abc1234" + temp, "this is tweet from user " + temp, temp, null, null, null, "tweet")
-        server ! AddTweet(temp, tweet)
+        //server ! AddTweet(temp, tweet)
       }
       server ! fetchUpdate(user.userID)
 
